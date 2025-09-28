@@ -1,0 +1,29 @@
+1. Distributed Web Scraper / Crawler with Scrapy & Redis
+Real-World Problem: Scraping large websites (e.g., e-commerce catalogs, news archives) is slow and prone to being blocked. A naive script can't handle millions of pages efficiently or respectfully.
+
+What to Build from Scratch:
+Build a scalable, distributed, and polite crawling system.
+
+Core Crawler: Use Scrapy to build spiders. Implement custom middleware for:
+
+Rate Limiting: Automatically adhering to robots.txt and adding delays between requests.
+
+User-Agent Rotation: Using a pool of user agents to avoid fingerprinting.
+
+Retry Logic: Handling failed requests with exponential backoff.
+
+Distributed Architecture: This is the key. Use Redis as a central message broker.
+
+Multiple scraper "worker" processes running on different machines (or containers) pull URLs from a shared Redis queue.
+
+Deduplication is handled in Redis to ensure the same URL isn't scraped twice (Bloom Filter is ideal here).
+
+Scraped items are pushed to another Redis queue for processing.
+
+Data Pipeline: Another set of workers consumes the scraped data, validates it, cleans it, and stores it in a persistent database (e.g., PostgreSQL or S3).
+
+Monitoring: Implement a basic dashboard (with Flask/Socket.IO or Grafana) to monitor the number of URLs in the queue, requests per minute, and errors.
+
+Tech Stack: Python, Scrapy, Redis, Docker (to containerize workers), PostgreSQL, Celery (optional, for the pipeline).
+
+Why it's Professional: This mirrors the architecture of real-world scraping platforms like Apache Nutch. It demonstrates understanding of distributed systems, queues, concurrency, and resilience.
